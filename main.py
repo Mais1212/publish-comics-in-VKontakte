@@ -5,12 +5,13 @@ from dotenv import load_dotenv
 import requests
 
 
-def delete_png():
+def delete_png(comic_title):
     folder = os.listdir(".")
 
     for file in folder:
-        if file.endswith(".png"):
+        if file == comic_title:
             os.remove(os.path.join(".", file))
+            break
 
 
 def get_comix_url():
@@ -118,8 +119,8 @@ def main():
         upload_url = get_adress(access_token, group_id)
         comic_json = upload_comic_to_server(comic_title, upload_url)
         album_comic = save_comic_in_album(comic_json, group_id, access_token)
-        post_comic(access_token, group_id, album_comic.json(), comic_comment)
-        delete_png()
+        # post_comic(access_token, group_id, album_comic.json(), comic_comment)
+        delete_png(comic_title)
 
     except requests.exceptions.HTTPError as exception:
         print(exception)
