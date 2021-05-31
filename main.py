@@ -18,8 +18,8 @@ def get_random_comic_url():
     response = requests.get("https://xkcd.com/info.0.json")
     response.raise_for_status()
 
-    id_last_comic = response.json()["num"]
-    random_id = random.randint(1, id_last_comic)
+    last_comic_id = response.json()["num"]
+    random_id = random.randint(1, last_comic_id)
     comix_url = f"http://xkcd.com/{random_id}/info.0.json"
 
     return comix_url
