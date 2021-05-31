@@ -124,7 +124,6 @@ def main():
 
     except requests.exceptions.HTTPError as exception:
         print(exception)
-        exit()
 
 
 if __name__ == "__main__":
