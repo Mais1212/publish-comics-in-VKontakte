@@ -120,10 +120,11 @@ def main():
         comic_json = upload_comic_to_server(comic_title, upload_url)
         album_comic = save_comic_in_album(comic_json, group_id, vk_access_token)
         # post_comic(vk_access_token, group_id, album_comic.json(), comic_comment)
-        delete_png(comic_title)
 
     except requests.exceptions.HTTPError as exception:
         print(exception)
+    finally:
+        delete_png(comic_title)
 
 
 if __name__ == "__main__":
