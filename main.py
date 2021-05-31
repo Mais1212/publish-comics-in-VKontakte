@@ -14,7 +14,7 @@ def delete_png(comic_title):
             break
 
 
-def get_comix_url():
+def get_random_comic_url():
     response = requests.get("https://xkcd.com/info.0.json")
     response.raise_for_status()
 
@@ -116,7 +116,7 @@ def main():
     vk_access_token = os.getenv("VK_ACCESS_TOKEN")
     group_id = os.getenv("GROUP_ID")
     try:
-        url = get_comix_url()
+        url = get_random_comic_url()
         comic_title, comic_comment = download_comic(url)
         upload_url = get_address(vk_access_token, group_id)
         comic_json = upload_comic_to_server(comic_title, upload_url)
