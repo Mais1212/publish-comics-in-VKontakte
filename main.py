@@ -68,7 +68,7 @@ def upload_comic_to_server(comic_title, upload_url):
             'photo': file,
         }
         response = requests.post(upload_url, files=files)
-        response.raise_for_status()
+    response.raise_for_status()
 
     return response.json()
 
@@ -89,8 +89,8 @@ def get_adress(vk_access_token, group_id):
     return upload_url
 
 
-def download_picture(response, comic_title):
-    img_url = response.json()["img"]
+def download_picture(json_response, comic_title):
+    img_url = json_response["img"]
     img = requests.get(img_url)
 
     with open(comic_title, "wb") as file:
@@ -100,11 +100,12 @@ def download_picture(response, comic_title):
 def download_comic(url):
     response = requests.get(url)
     response.raise_for_status()
+    json_response = response.json()
 
-    comic_comment = response.json()["alt"]
-    comic_title = f'{response.json()["title"]}.png'
+    comic_comment = json_response["alt"]
+    comic_title = f'{json_response["title"]}.png'
 
-    download_picture(response, comic_title)
+    download_picture(json_response, comic_title)
 
     return comic_title, comic_comment
 
@@ -118,7 +119,8 @@ def main():
         comic_title, comic_comment = download_comic(url)
         upload_url = get_adress(vk_access_token, group_id)
         comic_json = upload_comic_to_server(comic_title, upload_url)
-        album_comic = save_comic_in_album(comic_json, group_id, vk_access_token)
+        album_comic = save_comic_in_album(
+            comic_json, group_id, vk_access_token)
         # post_comic(vk_access_token, group_id, album_comic.json(), comic_comment)
 
     except requests.exceptions.HTTPError as exception:
