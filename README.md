@@ -16,7 +16,7 @@ https://oauth.vk.com/authorize?client_id=CLIENT_ID&display=page&scope=photos,gro
 в адресной строке появится `access_token` (наподобие `533bacf01e1165b57531ad114461ae8736d6506a3`) скопируйте его.
 необходимо создать файл `.env` в корневой папке с кодом и записать туда скопированный вами `access_token`, в формате:
 ```
-ACCESS_TOKEN=ВАШ_ACCESS_TOKEN
+VK_ACCESS_TOKEN=ВАШ_ACCESS_TOKEN
 ```
 Также необходимо узнать `group_id` для вашей группы ВК - сделать это можно [здесь](https://regvk.com/id/). Дополните
 ваш файл `.env` на новой строчке в формате:
@@ -26,7 +26,7 @@ GROUP_ID=ВАШ_GROUP_ID
 
 ## Запуск
 
-Для запуска у вас уже должен быть установлен 
+Для запуска библиотеки у вас уже должен быть установлен 
 [Python 3](https://www.python.org/downloads/release/python-379/).
 
 - Установите зависимости командой:

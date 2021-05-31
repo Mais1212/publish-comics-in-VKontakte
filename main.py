@@ -25,7 +25,7 @@ def get_comix_url():
     return comix_url
 
 
-def post_comic(access_token, group_id, album_comic, comment):
+def post_comic(vk_access_token, group_id, album_comic, comment):
     owner_id = album_comic["response"][0]["owner_id"]
     media_id = album_comic["response"][0]["id"]
     method_name = "wall.post"
@@ -34,7 +34,7 @@ def post_comic(access_token, group_id, album_comic, comment):
         "attachments": attachments,
         "message": comment,
         "owner_id": f"-{group_id}",
-        "access_token": access_token,
+        "access_token": vk_access_token,
         "v": "5.131"
     }
 
@@ -44,14 +44,14 @@ def post_comic(access_token, group_id, album_comic, comment):
     response.raise_for_status()
 
 
-def save_comic_in_album(comic_json, group_id, access_token):
+def save_comic_in_album(comic_json, group_id, vk_access_token):
     method_name = "photos.saveWallPhoto"
     params = {
         "server": comic_json["server"],
         "photo": comic_json["photo"],
         "hash": comic_json["hash"],
         "group_id": group_id,
-        "access_token": access_token,
+        "access_token": vk_access_token,
         "v": "5.131"
     }
     response = requests.post(
@@ -73,10 +73,10 @@ def upload_comic_to_server(comic_title, upload_url):
     return response.json()
 
 
-def get_adress(access_token, group_id):
+def get_adress(vk_access_token, group_id):
     method_name = "photos.getWallUploadServer"
     params = {
-        "access_token": access_token,
+        "access_token": vk_access_token,
         "v": "5.131",
         "group_id": group_id
     }
@@ -111,15 +111,15 @@ def download_comic(url):
 
 def main():
     load_dotenv()
-    access_token = os.getenv("ACCESS_TOKEN")
+    vk_access_token = os.getenv("VK_ACCESS_TOKEN")
     group_id = os.getenv("GROUP_ID")
     try:
         url = get_comix_url()
         comic_title, comic_comment = download_comic(url)
-        upload_url = get_adress(access_token, group_id)
+        upload_url = get_adress(vk_access_token, group_id)
         comic_json = upload_comic_to_server(comic_title, upload_url)
-        album_comic = save_comic_in_album(comic_json, group_id, access_token)
-        # post_comic(access_token, group_id, album_comic.json(), comic_comment)
+        album_comic = save_comic_in_album(comic_json, group_id, vk_access_token)
+        # post_comic(vk_access_token, group_id, album_comic.json(), comic_comment)
         delete_png(comic_title)
 
     except requests.exceptions.HTTPError as exception:
