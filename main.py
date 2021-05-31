@@ -73,7 +73,7 @@ def upload_comic_to_server(comic_title, upload_url):
     return response.json()
 
 
-def get_adress(vk_access_token, group_id):
+def get_address(vk_access_token, group_id):
     method_name = "photos.getWallUploadServer"
     params = {
         "access_token": vk_access_token,
@@ -117,7 +117,7 @@ def main():
     try:
         url = get_comix_url()
         comic_title, comic_comment = download_comic(url)
-        upload_url = get_adress(vk_access_token, group_id)
+        upload_url = get_address(vk_access_token, group_id)
         comic_json = upload_comic_to_server(comic_title, upload_url)
         album_comic = save_comic_in_album(
             comic_json, group_id, vk_access_token)
