@@ -92,6 +92,7 @@ def get_address(vk_access_token, group_id):
 def download_picture(json_response, comic_title):
     img_url = json_response["img"]
     img = requests.get(img_url)
+    img.raise_for_status()
 
     with open(comic_title, "wb") as file:
         file.write(img.content)
