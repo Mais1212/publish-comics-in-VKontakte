@@ -8,9 +8,7 @@ from dotenv import load_dotenv
 
 def raise_for_vk_status(response):
     if "error" in response.text:
-        error_code = response.json()["error"]["error_code"]
-        print(f"error_code: {error_code}")
-        raise requests.HTTPError()
+        raise requests.HTTPError(response.json()["error"]["error_msg"])
 
 
 def delete_png(comic_title):
@@ -24,8 +22,9 @@ def delete_png(comic_title):
 
 def get_random_comic_url():
     response = requests.get("https://xkcd.com/info.0.json")
-    raise_for_vk_status(response)
+    
     response.raise_for_status()
+    raise_for_vk_status(response)
 
     last_comic_id = response.json()["num"]
     random_id = random.randint(1, last_comic_id)
@@ -48,8 +47,9 @@ def post_comic(vk_access_token, group_id, comment, owner_id, media_id):
     response = requests.post(
         f"https://api.vk.com/method/{method_name}", params=params
     )
-    raise_for_vk_status(response)
+    
     response.raise_for_status()
+    raise_for_vk_status(response)
 
 
 def save_comic_in_album(server, photo, image_hash, group_id, vk_access_token):
@@ -65,8 +65,9 @@ def save_comic_in_album(server, photo, image_hash, group_id, vk_access_token):
     response = requests.post(
         f"https://api.vk.com/method/{method_name}", params=params
     )
-    raise_for_vk_status(response)
+    
     response.raise_for_status()
+    raise_for_vk_status(response)
     response = response.json()
 
     owner_id = response["response"][0]["owner_id"]
@@ -80,8 +81,9 @@ def upload_comic_to_server(comic_title, upload_url):
             "photo": file,
         }
         response = requests.post(upload_url, files=files)
-    raise_for_vk_status(response)
+    
     response.raise_for_status()
+    raise_for_vk_status(response)
     response = response.json()
 
     server = response["server"]
@@ -101,8 +103,9 @@ def get_address(vk_access_token, group_id):
     response = requests.get(
         f"https://api.vk.com/method/{method_name}", params=params
     )
-    raise_for_vk_status(response)
+    
     response.raise_for_status()
+    raise_for_vk_status(response)
     upload_url = response.json()["response"]["upload_url"]
 
     return upload_url
@@ -111,8 +114,9 @@ def get_address(vk_access_token, group_id):
 def download_picture(response, comic_title):
     img_url = response["img"]
     img = requests.get(img_url)
-    raise_for_vk_status(img)
+
     img.raise_for_status()
+    raise_for_vk_status(img)
 
     with open(comic_title, "wb") as file:
         file.write(img.content)
@@ -120,12 +124,13 @@ def download_picture(response, comic_title):
 
 def download_comic(url):
     response = requests.get(url)
-    raise_for_vk_status(response)
+    
     response.raise_for_status()
+    raise_for_vk_status(response)
     response = response.json()
 
     comic_comment = response["alt"]
-    comic_title = f'{response["title"]}.png'
+    comic_title = f"{response['title']}.png"
 
     download_picture(response, comic_title)
 
