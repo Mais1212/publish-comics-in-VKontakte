@@ -67,10 +67,10 @@ def save_comic_in_album(server, photo, image_hash, group_id, vk_access_token):
     )
     raise_for_vk_status(response)
     response.raise_for_status()
-    json_response = response.json()
+    response = response.json()
 
-    owner_id = json_response["response"][0]["owner_id"]
-    media_id = json_response["response"][0]["id"]
+    owner_id = response["response"][0]["owner_id"]
+    media_id = response["response"][0]["id"]
     return owner_id, media_id
 
 
@@ -82,11 +82,11 @@ def upload_comic_to_server(comic_title, upload_url):
         response = requests.post(upload_url, files=files)
     raise_for_vk_status(response)
     response.raise_for_status()
-    json_response = response.json()
+    response = response.json()
 
-    server = json_response["server"]
-    photo = json_response["photo"]
-    image_hash = json_response["hash"]
+    server = response["server"]
+    photo = response["photo"]
+    image_hash = response["hash"]
 
     return server, photo, image_hash
 
@@ -108,8 +108,8 @@ def get_address(vk_access_token, group_id):
     return upload_url
 
 
-def download_picture(json_response, comic_title):
-    img_url = json_response["img"]
+def download_picture(response, comic_title):
+    img_url = response["img"]
     img = requests.get(img_url)
     raise_for_vk_status(img)
     img.raise_for_status()
@@ -122,12 +122,12 @@ def download_comic(url):
     response = requests.get(url)
     raise_for_vk_status(response)
     response.raise_for_status()
-    json_response = response.json()
+    response = response.json()
 
-    comic_comment = json_response["alt"]
-    comic_title = f'{json_response["title"]}.png'
+    comic_comment = response["alt"]
+    comic_title = f'{response["title"]}.png'
 
-    download_picture(json_response, comic_title)
+    download_picture(response, comic_title)
 
     return comic_title, comic_comment
 
