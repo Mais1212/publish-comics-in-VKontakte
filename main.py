@@ -75,9 +75,9 @@ def save_comic_in_album(server, photo, image_hash, group_id, vk_access_token):
 
 
 def upload_comic_to_server(comic_title, upload_url):
-    with open(comic_title, 'rb') as file:
+    with open(comic_title, "rb") as file:
         files = {
-            'photo': file,
+            "photo": file,
         }
         response = requests.post(upload_url, files=files)
     raise_for_vk_status(response)
