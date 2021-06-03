@@ -11,15 +11,6 @@ def raise_for_vk_status(response):
         raise requests.HTTPError(response.json()["error"]["error_msg"])
 
 
-def delete_png(comic_title):
-    folder = os.listdir(".")
-
-    for file in folder:
-        if file == comic_title:
-            os.remove(os.path.join(".", file))
-            break
-
-
 def get_random_comic_url():
     response = requests.get("https://xkcd.com/info.0.json")
     
@@ -158,7 +149,9 @@ def main():
     except requests.exceptions.HTTPError as exception:
         print(exception)
     finally:
-        delete_png(comic_title)
+        os.remove(os.path.join(".", comic_title))
+
+
 
 
 if __name__ == "__main__":
