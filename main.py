@@ -15,7 +15,6 @@ def get_random_comic_url():
     response = requests.get("https://xkcd.com/info.0.json")
     
     response.raise_for_status()
-    raise_for_vk_status(response)
 
     last_comic_id = response.json()["num"]
     random_id = random.randint(1, last_comic_id)
@@ -107,7 +106,6 @@ def download_picture(response, comic_title):
     img = requests.get(img_url)
 
     img.raise_for_status()
-    raise_for_vk_status(img)
 
     with open(comic_title, "wb") as file:
         file.write(img.content)
@@ -117,7 +115,6 @@ def download_comic(url):
     response = requests.get(url)
     
     response.raise_for_status()
-    raise_for_vk_status(response)
     response = response.json()
 
     comic_comment = response["alt"]
