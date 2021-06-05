@@ -7,8 +7,9 @@ from dotenv import load_dotenv
 
 
 def raise_for_vk_status(response):
-    if response.json().get("error"):
-        raise requests.HTTPError(response.json()["error"]["error_msg"])
+    response = response.json()
+    if response.get("error"):
+        raise requests.HTTPError(response["error"]["error_msg"])
 
 
 def get_random_comic_url():
