@@ -102,8 +102,7 @@ def get_address(vk_access_token, group_id):
     return upload_url
 
 
-def download_picture(response, comic_title):
-    img_url = response["img"]
+def download_picture(img_url, comic_title):
     img = requests.get(img_url)
 
     img.raise_for_status()
@@ -120,8 +119,9 @@ def download_comic(url):
 
     comic_comment = response["alt"]
     comic_title = f"{response['title']}.png"
+    img_url = response["img"]
 
-    download_picture(response, comic_title)
+    download_picture(img_url, comic_title)
 
     return comic_title, comic_comment
 
