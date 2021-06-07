@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 
 
 def raise_for_vk_status(response):
-    response = response.json()
     if response.get("error"):
         raise requests.HTTPError(response["error"]["error_msg"])
 
@@ -40,7 +39,7 @@ def post_comic(vk_access_token, group_id, comment, owner_id, media_id):
     )
 
     response.raise_for_status()
-    raise_for_vk_status(response)
+    raise_for_vk_status(response.json())
 
 
 def save_comic_in_album(server, photo, image_hash, group_id, vk_access_token):
@@ -58,8 +57,8 @@ def save_comic_in_album(server, photo, image_hash, group_id, vk_access_token):
     )
 
     response.raise_for_status()
-    raise_for_vk_status(response)
     response = response.json()
+    raise_for_vk_status(response)
 
     owner_id = response["response"][0]["owner_id"]
     media_id = response["response"][0]["id"]
@@ -74,8 +73,8 @@ def upload_comic_to_server(comic_title, upload_url):
         response = requests.post(upload_url, files=files)
 
     response.raise_for_status()
-    raise_for_vk_status(response)
     response = response.json()
+    raise_for_vk_status(response)
 
     server = response["server"]
     photo = response["photo"]
@@ -96,8 +95,9 @@ def get_address(vk_access_token, group_id):
     )
 
     response.raise_for_status()
+    response = response.json()
     raise_for_vk_status(response)
-    upload_url = response.json()["response"]["upload_url"]
+    upload_url = response["response"]["upload_url"]
 
     return upload_url
 
